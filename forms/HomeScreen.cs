@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
-namespace Chess
+namespace Chess.forms
 {
     public partial class HomeScreen : Form
     {
@@ -18,7 +19,7 @@ namespace Chess
 
         private void HomeScreen_Resize(object sender, EventArgs e)
         {
-            if(!(this.WindowState == FormWindowState.Minimized))
+            if(!(WindowState == FormWindowState.Minimized))
             {
                 ResizeComponents();
             }
@@ -41,6 +42,32 @@ namespace Chess
 
             Font titleFont = new Font("Yu Gothic UI", width / 4, FontStyle.Regular);
             Title.Font = titleFont;
+        }
+
+        private void Login_Click(object sender, EventArgs e)
+        {
+            Hide();
+            Login logScreen = new Login();
+
+            Thread thread = new Thread(() => Application.Run(logScreen));
+
+            thread.Start();
+            thread.Join();
+
+            Show();
+        }
+
+        private void Register_Click(object sender, EventArgs e)
+        {
+            Hide();
+            Register regScreen = new Register();
+
+            Thread thread = new Thread(() => Application.Run(regScreen));
+
+            thread.Start();
+            thread.Join();
+
+            Show();
         }
 
     }

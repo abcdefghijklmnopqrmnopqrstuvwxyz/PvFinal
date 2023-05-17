@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using Chess.forms;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Chess
@@ -7,8 +8,9 @@ namespace Chess
     {
         static void Main()
         {
-            HomeScreen loadScreen = new HomeScreen();
-            new Thread(x => Application.Run(loadScreen)).Start();
+            Game loadScreen = new Game();
+            new Thread(() => Application.Run(loadScreen)).Start();
         }
+
     }
 }

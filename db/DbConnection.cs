@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using System.Data.SqlClient;
 
-namespace WindowsFormsApp1
+namespace Chess.db
 {
     public class DbConnection
     {

@@ -30,10 +30,13 @@ C:\Users\bohac\Documents\C#\Chess\bin\Debug\System.Security.Permissions.xml
 C:\Users\bohac\Documents\C#\Chess\bin\Debug\System.Security.Principal.Windows.xml
 C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.csproj.AssemblyReference.cache
 C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.csproj.SuggestedBindingRedirects.cache
-C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.HomeScreen.resources
 C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.Properties.Resources.resources
 C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.csproj.GenerateResource.cache
 C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.csproj.CoreCompileInputs.cache
 C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.csproj.CopyComplete
 C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.exe
 C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.pdb
+C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.forms.HomeScreen.resources
+C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.forms.Register.resources
+C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.forms.Login.resources
+C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.forms.Game.resources

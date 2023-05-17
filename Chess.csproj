@@ -68,17 +68,44 @@
     <Compile Include="db\DbConnection.cs" />
     <Compile Include="db\IDB.cs" />
     <Compile Include="db\UsersDB.cs" />
+    <Compile Include="forms\Game.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\Game.Designer.cs">
+      <DependentUpon>Game.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\HomeScreen.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\HomeScreen.Designer.cs">
       <DependentUpon>HomeScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="forms\Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Register.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\Register.Designer.cs">
+      <DependentUpon>Register.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tables\Users.cs" />
+    <EmbeddedResource Include="forms\Game.resx">
+      <DependentUpon>Game.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\HomeScreen.resx">
       <DependentUpon>HomeScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\Register.resx">
+      <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
