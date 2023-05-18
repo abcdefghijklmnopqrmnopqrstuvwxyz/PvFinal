@@ -8,6 +8,9 @@ namespace Chess.db
 {
     internal class UsersDB : IDB<Users>
     {
+        public static bool registered = false;
+        public static bool logged = false;
+
         public void Login(Users u)
         {
             SqlConnection connection = DbConnection.Connect();
@@ -28,10 +31,12 @@ namespace Chess.db
                 int success = Convert.ToInt32(successParameter.Value);
                 if (success == 1)
                 {
+                    logged = true;
                     MessageBox.Show("You have successfully logged!", "Successfully logged.", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
+                    logged = false;
                     MessageBox.Show("Invalid username or password!", "Invalid credentials.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -57,10 +62,12 @@ namespace Chess.db
                 int success = Convert.ToInt32(successParameter.Value);
                 if (success == 1)
                 {
+                    registered = true;
                     MessageBox.Show("You have been successfully registered!", "Successfully registered.", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
+                    registered = false;
                     MessageBox.Show("This username already exists!", "Invalid username.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }

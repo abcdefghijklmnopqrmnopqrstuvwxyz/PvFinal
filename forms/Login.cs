@@ -24,6 +24,8 @@ namespace Chess.forms
             if (Nameinput.Text.Length > 0 && Passinput.Text.Length >= 5)
             {
                 new UsersDB().Login(new Users(Nameinput.Text, Passinput.Text));
+                if (UsersDB.logged)
+                    Dispose();
             }
             else
             {

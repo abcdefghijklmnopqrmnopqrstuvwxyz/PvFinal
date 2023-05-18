@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chess.db;
+using System;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
@@ -54,7 +55,16 @@ namespace Chess.forms
             thread.Start();
             thread.Join();
 
-            Show();
+            if (UsersDB.logged)
+            {
+                Dispose();
+                Selection selection = new Selection();
+                new Thread(() => Application.Run(selection)).Start();
+            }
+            else
+            {
+                Show();
+            }
         }
 
         private void Register_Click(object sender, EventArgs e)

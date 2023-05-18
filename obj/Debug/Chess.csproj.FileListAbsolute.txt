@@ -40,3 +40,4 @@ C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.forms.HomeScreen.resources
 C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.forms.Register.resources
 C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.forms.Login.resources
 C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.forms.Game.resources
+C:\Users\bohac\Documents\C#\Chess\obj\Debug\Chess.forms.Selection.resources
