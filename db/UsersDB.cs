@@ -10,6 +10,7 @@ namespace Chess.db
     {
         public static bool registered = false;
         public static bool logged = false;
+        public static string username;
 
         public void Login(Users u)
         {
@@ -32,6 +33,7 @@ namespace Chess.db
                 if (success == 1)
                 {
                     logged = true;
+                    username = u.Name;  
                     MessageBox.Show("You have successfully logged!", "Successfully logged.", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else

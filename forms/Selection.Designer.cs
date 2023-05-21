@@ -85,7 +85,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Selection";
-            this.Text = "Selection";
+            this.Text = "Select Role";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

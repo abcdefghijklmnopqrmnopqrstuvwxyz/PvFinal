@@ -59,6 +59,7 @@ namespace Chess.forms
                 {
                     Button button = new Button();
                     button.Dock = DockStyle.Fill;
+                    button.Margin = new Padding(0);
 
                     Color squareColor = (row + col) % 2 == 0 ? lightSquareColor : darkSquareColor;
                     button.BackColor = squareColor;
@@ -70,6 +71,12 @@ namespace Chess.forms
                     chessboardButtons[row, col] = button;
                 }
             }
+        }
+
+        public void SetupNames(string name1, string name2)
+        {
+            User1.Text = name1;
+            User2.Text = name2;
         }
 
     }

@@ -2,57 +2,73 @@
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using Chess.forms;
+using Chess.db;
 
 namespace Chess.tcp
 {
     internal class Server
     {
         private const int serverPort = 2459;
-        private TcpListener tcpListener;
         private TcpClient connectedClient;
+        NetworkStream networkStream;
+        Game game;
 
-        public Server()
+        public Server(Game game)
         {
+            this.game = game;
             Start();
         }
 
-        private async void Start()
+        private void Start()
         {
-            tcpListener = new TcpListener(IPAddress.Any, serverPort);
+            Task.Run(async () =>
+            {
+                await FindClient();
+                await SetNames();
+            });
+        }
+
+        private async Task FindClient()
+        {
+            TcpListener tcpListener = new TcpListener(IPAddress.Any, serverPort);
             tcpListener.Start();
-
             connectedClient = await tcpListener.AcceptTcpClientAsync();
-
-            await ReceiveData();
-
             tcpListener.Stop();
         }
 
-        private async Task ReceiveData()
+        private async Task SetNames()
         {
-            NetworkStream networkStream = connectedClient.GetStream();
+            networkStream = connectedClient.GetStream();
 
+            byte[] clientName = new byte[1024];
+            int bytesRead = await networkStream.ReadAsync(clientName, 0, clientName.Length);
+            string client = Encoding.UTF8.GetString(clientName, 0, bytesRead);
+
+            byte[] serverName = Encoding.UTF8.GetBytes(UsersDB.username);
+            await networkStream.WriteAsync(serverName, 0, serverName.Length);
+
+            game.SetupNames(client, UsersDB.username);
+        }
+
+        /*private async Task CommunicateWithClient()
+        {
             while (true)
             {
+                string message = "sr";
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                await networkStream.WriteAsync(data, 0, data.Length);
+
                 byte[] buffer = new byte[1024];
                 int bytesRead = await networkStream.ReadAsync(buffer, 0, buffer.Length);
+                string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-                if (bytesRead == 0)
-                {
-                    break;
-                }
-
-                string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                MessageBox.Show("Response: " + receivedData);
-
-                string response = "Data.";
-                byte[] responseData = Encoding.UTF8.GetBytes(response);
-                await networkStream.WriteAsync(responseData, 0, responseData.Length);
+                await Task.Delay(1000);
             }
 
+            networkStream.Close();
             connectedClient.Close();
-        }
+        }*/
 
     }
 }

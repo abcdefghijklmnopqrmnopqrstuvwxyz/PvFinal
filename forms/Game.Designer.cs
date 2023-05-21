@@ -110,7 +110,7 @@
             this.Controls.Add(this.ScreenLayout);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Game";
-            this.Text = "Chess";
+            this.Text = "Chess Duel";
             this.Resize += new System.EventHandler(this.BoardScreen_Resize);
             this.ScreenLayout.ResumeLayout(false);
             this.ScreenLayout.PerformLayout();
