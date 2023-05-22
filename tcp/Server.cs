@@ -11,8 +11,8 @@ namespace Chess.tcp
     {
         private const int serverPort = 2459;
         private TcpClient connectedClient;
-        NetworkStream networkStream;
-        Game game;
+        private NetworkStream networkStream;
+        readonly Game game;
 
         public Server(Game game)
         {

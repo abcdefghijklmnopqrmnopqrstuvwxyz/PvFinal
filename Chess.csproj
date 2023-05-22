@@ -98,6 +98,10 @@
     <Compile Include="forms\Selection.Designer.cs">
       <DependentUpon>Selection.cs</DependentUpon>
     </Compile>
+    <Compile Include="pieces\Black.cs" />
+    <Compile Include="pieces\Pieces.cs" />
+    <Compile Include="pieces\PieceTypes.cs" />
+    <Compile Include="pieces\White.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tables\Users.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chess.pieces;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -13,6 +14,8 @@ namespace Chess.forms
             InitializeComponent();
             ResizeComponents();
             SetupBoard();
+            SetupPieces();
+            ResizeImages();
         }
 
         private void BoardScreen_Resize(object sender, EventArgs e)
@@ -20,6 +23,7 @@ namespace Chess.forms
             if (!(WindowState == FormWindowState.Minimized))
             {
                 ResizeComponents();
+                ResizeImages();
             }
         }
 
@@ -66,11 +70,50 @@ namespace Chess.forms
 
                     button.FlatStyle = FlatStyle.Flat;
 
+                    chessboardButtons[row, col] = button;
+
                     BoardLayout.Controls.Add(button, col, row);
 
                     chessboardButtons[row, col] = button;
                 }
             }
+        }
+
+        private void SetupPieces()
+        {
+            foreach (var x in Pieces.ListBlack)
+            {
+                chessboardButtons[x.Pos_y, x.Pos_x].Image = x.Image;
+            }
+            foreach (var x in Pieces.ListWhite)
+            {
+                chessboardButtons[x.Pos_y, x.Pos_x].Image = x.Image;
+            }
+        }
+
+        private void ResizeImages()
+        {
+            foreach (var x in chessboardButtons)
+            {
+                if (x.Image != null)
+                {
+                    Size newSize = new Size(x.Width - x.Width / 5, x.Height - x.Height / 10);
+                    x.Image = ResizeImage(x.Image, newSize);
+                }
+            }
+        }
+
+        private Image ResizeImage(Image image, Size newSize)
+        {
+            Bitmap resizedImage = new Bitmap(newSize.Width, newSize.Height);
+
+            using (Graphics graphics = Graphics.FromImage(resizedImage))
+            {
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                graphics.DrawImage(image, 0, 0, newSize.Width, newSize.Height);
+            }
+
+            return resizedImage;
         }
 
         public void SetupNames(string name1, string name2)

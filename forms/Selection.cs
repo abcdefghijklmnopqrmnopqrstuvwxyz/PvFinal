@@ -13,18 +13,36 @@ namespace Chess.forms
 
         private void Host_Click(object sender, System.EventArgs e)
         {
-            Dispose();
-            Game game = new Game();
-            new Thread(() => Application.Run(game)).Start();
-            Server server = new Server(game);
+            Close();
+            Game game = null;
+
+            new Thread(() =>
+            {
+                game = new Game();
+                Application.Run(game);
+            }).Start();
+
+            while (game == null)
+                Thread.Sleep(1);
+
+            new Server(game);
         }
 
         private void Join_Click(object sender, System.EventArgs e)
         {
-            Dispose();
-            Game game = new Game();
-            new Thread(() => Application.Run(game)).Start();
-            Client client = new Client(game);
+            Close();
+            Game game = null;
+
+            new Thread(() =>
+            {
+                game = new Game();
+                Application.Run(game);
+            }).Start();
+
+            while (game == null)
+                Thread.Sleep(1);
+
+            new Client(game);
         }
 
     }

@@ -1,5 +1,4 @@
 ﻿using Chess.db;
-using System;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,12 +12,12 @@ namespace Chess.forms
             InitializeComponent();
         }
 
-        private void HomeScreen_Load(object sender, EventArgs e)
+        private void HomeScreen_Load(object sender, System.EventArgs e)
         {
             ResizeComponents();
         }
 
-        private void HomeScreen_Resize(object sender, EventArgs e)
+        private void HomeScreen_Resize(object sender, System.EventArgs e)
         {
             if(!(WindowState == FormWindowState.Minimized))
             {
@@ -45,7 +44,7 @@ namespace Chess.forms
             Title.Font = titleFont;
         }
 
-        private void Login_Click(object sender, EventArgs e)
+        private void Login_Click(object sender, System.EventArgs e)
         {
             Hide();
             Login logScreen = new Login();
@@ -57,7 +56,7 @@ namespace Chess.forms
 
             if (UsersDB.logged)
             {
-                Dispose();
+                Close();
                 Selection selection = new Selection();
                 new Thread(() => Application.Run(selection)).Start();
             }
@@ -67,7 +66,7 @@ namespace Chess.forms
             }
         }
 
-        private void Register_Click(object sender, EventArgs e)
+        private void Register_Click(object sender, System.EventArgs e)
         {
             Hide();
             Register regScreen = new Register();

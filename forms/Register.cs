@@ -17,7 +17,7 @@ namespace Chess.forms
             {
                 new UsersDB().Register(new Users(Nameinput.Text, Passinput.Text));
                 if(UsersDB.registered)
-                    Dispose();
+                    Close();
             }
             else
             {
