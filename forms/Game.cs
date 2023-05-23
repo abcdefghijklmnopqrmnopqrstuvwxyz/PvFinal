@@ -1,6 +1,8 @@
 ﻿using Chess.pieces;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Chess.forms
@@ -64,6 +66,9 @@ namespace Chess.forms
                     Button button = new Button();
                     button.Dock = DockStyle.Fill;
                     button.Margin = new Padding(0);
+                    button.BackgroundImageLayout = ImageLayout.Center;
+                    button.Click += TryMove;
+
 
                     Color squareColor = (row + col) % 2 == 0 ? lightSquareColor : darkSquareColor;
                     button.BackColor = squareColor;
@@ -79,15 +84,37 @@ namespace Chess.forms
             }
         }
 
+        private void TryMove(object sender, EventArgs e)
+        {
+            int x = BoardLayout.GetRow((Button)sender);
+            int y = BoardLayout.GetColumn((Button)sender);
+
+            int index = y + (x * 8);
+
+            List<Piece> List = PiecesList.ListBlack.Concat(PiecesList.ListWhite).ToList();
+
+            foreach (Piece piece in List) 
+            {
+                int pieceIndex = piece.Pos_y + (piece.Pos_x * 8);
+                if (index == pieceIndex)
+                {
+                    foreach (int position in piece.ValidMoves())
+                    { 
+                        //Implementation for possible moves
+                    }
+                }
+            }
+        }
+
         private void SetupPieces()
         {
-            foreach (var x in Pieces.ListBlack)
+            foreach (var x in PiecesList.ListBlack)
             {
-                chessboardButtons[x.Pos_y, x.Pos_x].Image = x.Image;
+                chessboardButtons[x.Pos_x, x.Pos_y].Image = x.Image;
             }
-            foreach (var x in Pieces.ListWhite)
+            foreach (var x in PiecesList.ListWhite)
             {
-                chessboardButtons[x.Pos_y, x.Pos_x].Image = x.Image;
+                chessboardButtons[x.Pos_x, x.Pos_y].Image = x.Image;
             }
         }
 
@@ -97,7 +124,7 @@ namespace Chess.forms
             {
                 if (x.Image != null)
                 {
-                    Size newSize = new Size(x.Width - x.Width / 5, x.Height - x.Height / 10);
+                    Size newSize = new Size(x.Width - x.Width / 3, x.Height - x.Height / 6);
                     x.Image = ResizeImage(x.Image, newSize);
                 }
             }
