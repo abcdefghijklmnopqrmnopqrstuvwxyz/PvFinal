@@ -14,10 +14,5 @@ namespace Chess.pieces
             yield return 0;
         }
 
-        public override bool IsOwnPiece(int x, int y)
-        {
-            return false;
-        }
-
     }
 }

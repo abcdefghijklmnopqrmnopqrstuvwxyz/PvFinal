@@ -103,7 +103,7 @@
     <Compile Include="pieces\Knight.cs" />
     <Compile Include="pieces\Pawn.cs" />
     <Compile Include="pieces\Piece.cs" />
-    <Compile Include="pieces\Pieces.cs" />
+    <Compile Include="pieces\PiecesList.cs" />
     <Compile Include="pieces\PieceTypes.cs" />
     <Compile Include="pieces\Queen.cs" />
     <Compile Include="pieces\Rook.cs" />

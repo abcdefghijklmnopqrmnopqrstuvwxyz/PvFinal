@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Chess.forms;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Chess.pieces
@@ -34,8 +35,13 @@ namespace Chess.pieces
             yield return 0;
         }
 
-        public virtual bool IsOwnPiece(int x, int y)
-        { 
+        protected virtual bool IsOwnPiece(int index)
+        {
+            foreach (Piece piece in Color == PieceColor.White ? PiecesList.ListWhite : PiecesList.ListBlack)
+            {
+                if (piece.Pos_y + (piece.Pos_x * Game.BoardSize) == index && piece.Active)
+                    return true;
+            }
             return false;
         }
 

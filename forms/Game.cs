@@ -9,7 +9,9 @@ namespace Chess.forms
 {
     public partial class Game : Form
     {
-        private readonly Button[,] chessboardButtons = new Button[8, 8];
+        private readonly Button[,] chessboardButtons = new Button[BoardSize, BoardSize];
+        public const int BoardSize = 8;
+        private Piece ActivePiece = null;
 
         public Game()
         {
@@ -32,7 +34,7 @@ namespace Chess.forms
         private void ResizeComponents()
         {
             int width = this.ClientSize.Width / 4;
-            int height = this.ClientSize.Height / 8;
+            int height = this.ClientSize.Height / BoardSize;
 
             Font titleFont = new Font("Tahoma", width / 10, FontStyle.Regular);
 
@@ -59,48 +61,113 @@ namespace Chess.forms
             Color lightSquareColor = Color.White;
             Color darkSquareColor = Color.Gray;
 
-            for (int row = 0; row < 8; row++)
+            for (int row = 0; row < BoardSize; row++)
             {
-                for (int col = 0; col < 8; col++)
+                for (int col = 0; col < BoardSize; col++)
                 {
                     Button button = new Button();
                     button.Dock = DockStyle.Fill;
                     button.Margin = new Padding(0);
                     button.BackgroundImageLayout = ImageLayout.Center;
-                    button.Click += TryMove;
-
-
-                    Color squareColor = (row + col) % 2 == 0 ? lightSquareColor : darkSquareColor;
-                    button.BackColor = squareColor;
-
+                    button.Click += TryMove;  
                     button.FlatStyle = FlatStyle.Flat;
-
-                    chessboardButtons[row, col] = button;
-
                     BoardLayout.Controls.Add(button, col, row);
-
                     chessboardButtons[row, col] = button;
+                }
+            }
+
+            ColorButtons();
+        }
+
+        private void ColorButtons()
+        {
+            for (int i = 0; i < chessboardButtons.GetLength(0); i++)
+            {
+                for (int j = 0; j < chessboardButtons.GetLength(1); j++)
+                {
+                    if ((i + j) % 2 == 0)
+                        chessboardButtons[i, j].BackColor = Color.White;
+                    else
+                        chessboardButtons[i, j].BackColor = Color.Gray;
                 }
             }
         }
 
         private void TryMove(object sender, EventArgs e)
         {
-            int x = BoardLayout.GetRow((Button)sender);
-            int y = BoardLayout.GetColumn((Button)sender);
+            int index = BoardLayout.GetColumn((Button)sender) + (BoardLayout.GetRow((Button)sender) * BoardSize);
 
-            int index = y + (x * 8);
+            CheckActivePiece(index);
 
-            List<Piece> List = PiecesList.ListBlack.Concat(PiecesList.ListWhite).ToList();
-
-            foreach (Piece piece in List) 
+            for (int i = 0; i < chessboardButtons.GetLength(0); i++)
             {
-                int pieceIndex = piece.Pos_y + (piece.Pos_x * 8);
+                for (int j = 0; j < chessboardButtons.GetLength(1); j++)
+                {
+                    Button button = chessboardButtons[i, j];
+
+                    if (button.BackColor == Color.LightGreen && j + (i * BoardSize) == index)
+                    {
+                        button.Image = ActivePiece.Image;
+                        RemovePiece(ActivePiece.Pos_x, ActivePiece.Pos_y);
+                        ActivePiece.Pos_x = i;
+                        ActivePiece.Pos_y = j;
+                    }
+                }
+            }
+
+            ColorButtons();
+            HighlightMoves();
+        }
+
+        private void RemovePiece(int x, int y)
+        {
+            chessboardButtons[x, y].Image = null;
+        }
+
+        private void CheckActivePiece(int index)
+        {
+            List<Piece> list = PiecesList.ListBlack.Concat(PiecesList.ListWhite).ToList();
+
+            foreach (Piece piece in list)
+            {
+                int pieceIndex = piece.Pos_y + (piece.Pos_x * BoardSize);
+
                 if (index == pieceIndex)
                 {
-                    foreach (int position in piece.ValidMoves())
-                    { 
-                        //Implementation for possible moves
+                    ActivePiece = piece;
+                    return;
+                }
+            }
+
+            for (int i = 0; i < chessboardButtons.GetLength(0); i++)
+            {
+                for (int j = 0; j < chessboardButtons.GetLength(1); j++)
+                {
+                    Button button = chessboardButtons[i, j];
+
+                    if (button.BackColor == Color.LightGreen && j + (i * BoardSize) == index)
+                        return;
+                }
+            }
+
+            ActivePiece = null;
+        }
+
+        private void HighlightMoves()
+        {
+            if (ActivePiece != null)
+            {
+                chessboardButtons[ActivePiece.Pos_x, ActivePiece.Pos_y].BackColor = Color.IndianRed;
+
+                foreach (int position in ActivePiece.ValidMoves())
+                {
+                    for (int i = 0; i < chessboardButtons.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < chessboardButtons.GetLength(1); j++)
+                        {
+                            if (j + (i * BoardSize) == position)
+                                chessboardButtons[i, j].BackColor = Color.LightGreen;
+                        }
                     }
                 }
             }
@@ -109,13 +176,9 @@ namespace Chess.forms
         private void SetupPieces()
         {
             foreach (var x in PiecesList.ListBlack)
-            {
                 chessboardButtons[x.Pos_x, x.Pos_y].Image = x.Image;
-            }
             foreach (var x in PiecesList.ListWhite)
-            {
                 chessboardButtons[x.Pos_x, x.Pos_y].Image = x.Image;
-            }
         }
 
         private void ResizeImages()

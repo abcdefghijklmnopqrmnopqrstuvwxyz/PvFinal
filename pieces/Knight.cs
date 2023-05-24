@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Chess.forms;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Chess.pieces
@@ -11,12 +12,35 @@ namespace Chess.pieces
 
         public override IEnumerable<int> ValidMoves()
         {
-            yield return 0;
-        }
-
-        public override bool IsOwnPiece(int x, int y)
-        {
-            return false;
+            int position = Pos_y + Pos_x * Game.BoardSize;
+            if (Pos_y > 0)
+            {
+                if (!IsOwnPiece(position - (2 * Game.BoardSize + 1)))
+                    yield return position - (2 * Game.BoardSize + 1);
+                if (!IsOwnPiece(position + (2 * Game.BoardSize - 1)))
+                    yield return position + (2 * Game.BoardSize - 1);
+            }
+            if (Pos_y < Game.BoardSize - 1) 
+            {
+                if (!IsOwnPiece(position - (2 * Game.BoardSize - 1)))
+                    yield return position - (2 * Game.BoardSize - 1);
+                if (!IsOwnPiece(position + (2 * Game.BoardSize + 1)))
+                    yield return position + (2 * Game.BoardSize + 1);
+            }
+            if (Pos_y > 1)
+            {
+                if (!IsOwnPiece(position - (Game.BoardSize + 2)))
+                    yield return position - (Game.BoardSize + 2);
+                if (!IsOwnPiece(position + (Game.BoardSize - 2)))
+                    yield return position + (Game.BoardSize - 2);
+            }
+            if (Pos_y < Game.BoardSize - 2) 
+            {
+                if (!IsOwnPiece(position - (Game.BoardSize - 2)))
+                    yield return position - (Game.BoardSize - 2);
+                if (!IsOwnPiece(position + (Game.BoardSize + 2)))
+                    yield return position + (Game.BoardSize + 2);
+            }
         }
 
     }
