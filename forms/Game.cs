@@ -109,6 +109,7 @@ namespace Chess.forms
                     {
                         button.Image = ActivePiece.Image;
                         RemovePiece(ActivePiece.Pos_x, ActivePiece.Pos_y);
+                        //Previous_x změna pro braní mimochodem
                         ActivePiece.Pos_x = i;
                         ActivePiece.Pos_y = j;
                     }
@@ -117,6 +118,7 @@ namespace Chess.forms
 
             ColorButtons();
             HighlightMoves();
+            ResizeImages();
         }
 
         private void RemovePiece(int x, int y)

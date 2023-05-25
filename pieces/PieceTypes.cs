@@ -3,7 +3,8 @@
     public enum PieceColor
     { 
         Black,
-        White
+        White,
+        Null
     }
 
     public enum PieceType
@@ -13,7 +14,8 @@
         Bishop,
         Rook,
         Queen,
-        King
+        King,
+        Null
     }
 
 }

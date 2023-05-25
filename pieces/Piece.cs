@@ -45,5 +45,15 @@ namespace Chess.pieces
             return false;
         }
 
+        protected virtual bool IsEnemyPiece(int index)
+        {
+            foreach (Piece piece in Color == PieceColor.White ? PiecesList.ListBlack : PiecesList.ListWhite)
+            {
+                if (piece.Pos_y + (piece.Pos_x * Game.BoardSize) == index && piece.Active)
+                    return true;
+            }
+            return false;
+        }
+
     }
 }
