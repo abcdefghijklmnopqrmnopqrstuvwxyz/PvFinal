@@ -32,10 +32,10 @@ namespace Chess.pieces
 
         public virtual IEnumerable<int> ValidMoves()
         {
-            yield return 0;
+            throw new System.Exception(message: "Not implemented.");
         }
 
-        protected virtual bool IsOwnPiece(int index)
+        protected bool IsOwnPiece(int index)
         {
             foreach (Piece piece in Color == PieceColor.White ? PiecesList.ListWhite : PiecesList.ListBlack)
             {
@@ -45,7 +45,7 @@ namespace Chess.pieces
             return false;
         }
 
-        protected virtual bool IsEnemyPiece(int index)
+        protected bool IsEnemyPiece(int index)
         {
             foreach (Piece piece in Color == PieceColor.White ? PiecesList.ListBlack : PiecesList.ListWhite)
             {

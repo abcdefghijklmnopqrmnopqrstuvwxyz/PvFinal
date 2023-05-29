@@ -18,14 +18,14 @@ namespace Chess.pieces
             new Bishop(PieceColor.Black, PieceType.Bishop, Image.FromFile(Path + "b_bishop.png"), true, 0, 5),
             new Knight(PieceColor.Black, PieceType.Knight, Image.FromFile(Path + "b_knight.png"), true, 0, 1),
             new Knight(PieceColor.Black, PieceType.Knight, Image.FromFile(Path + "b_knight.png"), true, 0, 6),
-            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 0, 0),
-            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 1, 0),
-            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 2, 0),
-            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 3, 0),
-            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 4, 0),
-            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 5, 0),
-            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 6, 0),
-            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 7, 0)
+            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 0),
+            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 1),
+            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 2),
+            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 3),
+            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 4),
+            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 5),
+            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 6),
+            new Pawn(PieceColor.Black, PieceType.Pawn, Image.FromFile(Path + "b_pawn.png"), true, 1, 7)
         };
 
         public static List<Piece> ListWhite = new List<Piece> {
@@ -37,14 +37,14 @@ namespace Chess.pieces
             new Bishop(PieceColor.White, PieceType.Bishop, Image.FromFile(Path + "w_bishop.png"), true, 7, 5),
             new Knight(PieceColor.White, PieceType.Knight, Image.FromFile(Path + "w_knight.png"), true, 7, 1),
             new Knight(PieceColor.White, PieceType.Knight, Image.FromFile(Path + "w_knight.png"), true, 7, 6),
-            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 0, 0),
-            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 1, 0),
-            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 2, 0),
-            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 3, 0),
-            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 4, 0),
-            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 5, 0),
-            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 6, 0),
-            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 7, 7)
+            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 0),
+            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 1),
+            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 2),
+            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 3),
+            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 4),
+            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 5),
+            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 6),
+            new Pawn(PieceColor.White, PieceType.Pawn, Image.FromFile(Path + "w_pawn.png"), true, 6, 7)
         };
 
     }

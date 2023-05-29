@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Chess.db;
 using Chess.forms;
 
@@ -9,13 +10,17 @@ namespace Chess.tcp
 {
     internal class Client 
     {
+        public static string message = null;
         private const int serverPort = 2459;
         private TcpClient tcpClient;
         private NetworkStream networkStream;
-        readonly Game game;
+        private readonly Game game;
+        private readonly string IP;
 
-        public Client(Game game)
+
+        public Client(Game game, string IP)
         {
+            this.IP = IP;
             this.game = game;
             Start();
         }
@@ -26,6 +31,7 @@ namespace Chess.tcp
             {
                 await FindServer();
                 await SetNames();
+                await CommunicateWithServer();
             });
         }
 
@@ -36,7 +42,7 @@ namespace Chess.tcp
             {
                 try
                 {
-                    await tcpClient.ConnectAsync("127.0.0.1", serverPort);
+                    await tcpClient.ConnectAsync(IP, serverPort);
                 }
                 catch
                 {
@@ -59,24 +65,33 @@ namespace Chess.tcp
             game.SetupNames(UsersDB.username, server);
         }
 
-        /*private async Task CommunicateWithServer()
+        private async Task CommunicateWithServer()
         {
-            while (true)
+            while (Game.GameOngoing)
             {
-                string message = "cl";
-                byte[] data = Encoding.UTF8.GetBytes(message);
-                await networkStream.WriteAsync(data, 0, data.Length);
-
                 byte[] buffer = new byte[1024];
                 int bytesRead = await networkStream.ReadAsync(buffer, 0, buffer.Length);
                 string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                string[] parts = response.Split(',');
 
-                await Task.Delay(1000);
+                game.OpponentMove(Int32.Parse(parts[0]), Int32.Parse(parts[1]), Int32.Parse(parts[2]));
+
+                Game.IsOnTurn = true;
+
+                while (message == null)
+                    await Task.Delay(1);
+
+                Game.IsOnTurn = false;
+
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                await networkStream.WriteAsync(data, 0, data.Length);
+
+                message = null;
             }
 
             networkStream.Close();
             tcpClient.Close();
-        }*/
+        }
 
     }
 }

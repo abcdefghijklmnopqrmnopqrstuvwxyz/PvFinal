@@ -1,4 +1,6 @@
 ﻿using Chess.tcp;
+using System.Text.RegularExpressions;
+using System;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -18,7 +20,7 @@ namespace Chess.forms
 
             new Thread(() =>
             {
-                game = new Game();
+                game = new Game(true);
                 Application.Run(game);
             }).Start();
 
@@ -30,19 +32,28 @@ namespace Chess.forms
 
         private void Join_Click(object sender, System.EventArgs e)
         {
+            Regex ip = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
+            MatchCollection result = ip.Matches(IP.Text);
+
+            if (result.Count < 1)
+            {
+                MessageBox.Show("Invalid IP address!", "Invalid address.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             Close();
             Game game = null;
 
             new Thread(() =>
             {
-                game = new Game();
+                game = new Game(false);
                 Application.Run(game);
             }).Start();
 
             while (game == null)
                 Thread.Sleep(1);
 
-            new Client(game);
+            new Client(game, result[0].Value);
         }
 
     }

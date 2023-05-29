@@ -1,7 +1,6 @@
 ﻿using Chess.forms;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace Chess.pieces
 {
@@ -11,9 +10,8 @@ namespace Chess.pieces
 
         public int Previous_x { get => _previous_x; set => _previous_x = value; }
 
-        public Pawn(PieceColor color, PieceType type, Image image, bool active, int pos_x, int pos_y, int previous_x) : base(color, type, image, active, pos_x, pos_y)
+        public Pawn(PieceColor color, PieceType type, Image image, bool active, int pos_x, int pos_y) : base(color, type, image, active, pos_x, pos_y)
         {
-            Previous_x = previous_x;
         }
 
         public override IEnumerable<int> ValidMoves()
@@ -91,8 +89,6 @@ namespace Chess.pieces
                     }
                     break;
             }
-            
-            MessageBox.Show(Previous_x + "");
         }
 
     }

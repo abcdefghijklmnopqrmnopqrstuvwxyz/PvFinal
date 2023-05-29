@@ -4,15 +4,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Chess.forms;
 using Chess.db;
+using System.Windows.Forms;
+using System;
 
 namespace Chess.tcp
 {
     internal class Server
     {
+        public static string message = null;
         private const int serverPort = 2459;
         private TcpClient connectedClient;
         private NetworkStream networkStream;
-        readonly Game game;
+        private readonly Game game;
 
         public Server(Game game)
         {
@@ -26,6 +29,7 @@ namespace Chess.tcp
             {
                 await FindClient();
                 await SetNames();
+                await CommunicateWithClient();
             });
         }
 
@@ -51,24 +55,35 @@ namespace Chess.tcp
             game.SetupNames(client, UsersDB.username);
         }
 
-        /*private async Task CommunicateWithClient()
+        private async Task CommunicateWithClient()
         {
-            while (true)
+            Game.IsOnTurn = true;
+
+            while (Game.GameOngoing)
             {
-                string message = "sr";
+                while (message == null)
+                    await Task.Delay(1);
+
+                Game.IsOnTurn = false;
+
                 byte[] data = Encoding.UTF8.GetBytes(message);
                 await networkStream.WriteAsync(data, 0, data.Length);
 
+                message = null;
+                
                 byte[] buffer = new byte[1024];
                 int bytesRead = await networkStream.ReadAsync(buffer, 0, buffer.Length);
                 string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                string[] parts = response.Split(',');
 
-                await Task.Delay(1000);
+                game.OpponentMove(Int32.Parse(parts[0]), Int32.Parse(parts[1]), Int32.Parse(parts[2]));
+
+                Game.IsOnTurn = true;
             }
 
             networkStream.Close();
             connectedClient.Close();
-        }*/
+        }
 
     }
 }

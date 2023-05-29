@@ -1,4 +1,5 @@
 ﻿using Chess.pieces;
+using Chess.tcp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,16 +11,20 @@ namespace Chess.forms
     public partial class Game : Form
     {
         private readonly Button[,] chessboardButtons = new Button[BoardSize, BoardSize];
-        public const int BoardSize = 8;
         private Piece ActivePiece = null;
+        private readonly bool IsServer;
+        public static bool IsOnTurn = false;
+        public static bool GameOngoing = true;
+        public const int BoardSize = 8;
 
-        public Game()
+        public Game(bool isServer)
         {
             InitializeComponent();
             ResizeComponents();
             SetupBoard();
             SetupPieces();
             ResizeImages();
+            IsServer = isServer;
         }
 
         private void BoardScreen_Resize(object sender, EventArgs e)
@@ -33,8 +38,8 @@ namespace Chess.forms
 
         private void ResizeComponents()
         {
-            int width = this.ClientSize.Width / 4;
-            int height = this.ClientSize.Height / BoardSize;
+            int width = ClientSize.Width / 4;
+            int height = ClientSize.Height / BoardSize;
 
             Font titleFont = new Font("Tahoma", width / 10, FontStyle.Regular);
 
@@ -44,14 +49,14 @@ namespace Chess.forms
             User1.Font = titleFont;
             User2.Font = titleFont;
 
-            if (this.ClientSize.Height < this.ClientSize.Width)
+            if (ClientSize.Height < ClientSize.Width)
             {
-                int margin = (this.ClientSize.Width - this.ClientSize.Height) / 2;
+                int margin = (ClientSize.Width - ClientSize.Height) / 2;
                 BoardLayout.Margin = new Padding(margin, 0, margin, 0);
             }
             else 
             {
-                int margin = (this.ClientSize.Height - this.ClientSize.Width) / 3;
+                int margin = (ClientSize.Height - ClientSize.Width) / 3;
                 BoardLayout.Margin = new Padding(0, margin, 0, margin);
             }
         }
@@ -95,9 +100,23 @@ namespace Chess.forms
 
         private void TryMove(object sender, EventArgs e)
         {
-            int index = BoardLayout.GetColumn((Button)sender) + (BoardLayout.GetRow((Button)sender) * BoardSize);
+            if (!IsOnTurn)
+                return;
 
-            CheckActivePiece(index);
+            int index = BoardLayout.GetColumn((Button)sender) + (BoardLayout.GetRow((Button)sender) * BoardSize);
+            List<Piece> list = PiecesList.ListBlack.Concat(PiecesList.ListWhite).ToList();
+
+            bool checkactive = true;
+
+            foreach (Piece piece in list)
+            {
+                int pieceIndex = piece.Pos_y + (piece.Pos_x * BoardSize);
+                if (pieceIndex == index && chessboardButtons[piece.Pos_x, piece.Pos_y].BackColor == Color.LightGreen)
+                    checkactive = false;
+            }
+
+            if (checkactive)
+                CheckActivePiece(index, list);
 
             for (int i = 0; i < chessboardButtons.GetLength(0); i++)
             {
@@ -107,11 +126,17 @@ namespace Chess.forms
 
                     if (button.BackColor == Color.LightGreen && j + (i * BoardSize) == index)
                     {
+                        DiscardPiece(j + i * BoardSize);
+                        string msg = (ActivePiece.Pos_x * BoardSize + ActivePiece.Pos_y) + "," + i + "," + j;
+                        if (IsServer)
+                            Server.message = msg;
+                        else
+                            Client.message = msg;
                         button.Image = ActivePiece.Image;
                         RemovePiece(ActivePiece.Pos_x, ActivePiece.Pos_y);
-                        //Previous_x změna pro braní mimochodem
-                        ActivePiece.Pos_x = i;
+                        ActivePiece.Pos_x = i; 
                         ActivePiece.Pos_y = j;
+                        ActivePiece = null;
                     }
                 }
             }
@@ -121,21 +146,35 @@ namespace Chess.forms
             ResizeImages();
         }
 
+        private void DiscardPiece(int index)
+        {
+            foreach (Piece piece in ActivePiece.Color == PieceColor.White ? PiecesList.ListBlack : PiecesList.ListWhite)
+            {
+                int pieceIndex = piece.Pos_y + (piece.Pos_x * BoardSize);
+                if (pieceIndex == index)
+                {
+                    piece.Active = false;
+                    piece.Image = null;
+                    piece.Pos_x = -1;
+                    piece.Pos_y = -1;
+                }
+            }
+        }
+
         private void RemovePiece(int x, int y)
         {
             chessboardButtons[x, y].Image = null;
         }
 
-        private void CheckActivePiece(int index)
+        private void CheckActivePiece(int index, List<Piece> list)
         {
-            List<Piece> list = PiecesList.ListBlack.Concat(PiecesList.ListWhite).ToList();
-
             foreach (Piece piece in list)
             {
                 int pieceIndex = piece.Pos_y + (piece.Pos_x * BoardSize);
-
-                if (index == pieceIndex)
+                if (index == pieceIndex && piece.Active)
                 {
+                    if ((piece.Color == PieceColor.White && !IsServer) || (piece.Color == PieceColor.Black && IsServer))
+                        return;
                     ActivePiece = piece;
                     return;
                 }
@@ -146,7 +185,6 @@ namespace Chess.forms
                 for (int j = 0; j < chessboardButtons.GetLength(1); j++)
                 {
                     Button button = chessboardButtons[i, j];
-
                     if (button.BackColor == Color.LightGreen && j + (i * BoardSize) == index)
                         return;
                 }
@@ -206,6 +244,25 @@ namespace Chess.forms
             }
 
             return resizedImage;
+        }
+
+        public void OpponentMove(int index, int bx, int by)
+        {
+            List<Piece> list = PiecesList.ListBlack.Concat(PiecesList.ListWhite).ToList();
+            foreach (Piece piece in list)
+            {
+                int pieceIndex = piece.Pos_y + (piece.Pos_x * BoardSize);
+                if (pieceIndex == index)
+                    ActivePiece = piece;
+            }
+
+            DiscardPiece(by + BoardSize * bx);
+            chessboardButtons[bx, by].Image = ActivePiece.Image;
+            RemovePiece(ActivePiece.Pos_x, ActivePiece.Pos_y);
+            ActivePiece.Pos_x = bx;
+            ActivePiece.Pos_y = by;
+            ActivePiece = null;
+            ResizeImages();
         }
 
         public void SetupNames(string name1, string name2)
