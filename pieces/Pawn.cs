@@ -1,15 +1,13 @@
 ﻿using Chess.forms;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 
 namespace Chess.pieces
 {
     internal class Pawn : Piece
     {
-        private int _previous_x;
-
-        public int Previous_x { get => _previous_x; set => _previous_x = value; }
-
         public Pawn(PieceColor color, PieceType type, Image image, bool active, int pos_x, int pos_y) : base(color, type, image, active, pos_x, pos_y)
         {
         }

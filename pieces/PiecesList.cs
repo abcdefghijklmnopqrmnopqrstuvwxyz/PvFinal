@@ -7,7 +7,7 @@ namespace Chess.pieces
 {
     internal class PiecesList
     {
-        private static readonly string Path = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\res\\";
+        public static readonly string Path = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\res\\";
 
         public static List<Piece> ListBlack = new List<Piece> {
             new King(PieceColor.Black, PieceType.King, Image.FromFile(Path + "b_king.png"), true, 0, 3),

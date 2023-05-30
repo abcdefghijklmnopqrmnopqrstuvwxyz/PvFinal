@@ -111,6 +111,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tables\Users.cs" />
     <Compile Include="tcp\Client.cs" />
+    <Compile Include="tcp\GameConnection.cs" />
     <Compile Include="tcp\Server.cs" />
     <EmbeddedResource Include="forms\Game.resx">
       <DependentUpon>Game.cs</DependentUpon>

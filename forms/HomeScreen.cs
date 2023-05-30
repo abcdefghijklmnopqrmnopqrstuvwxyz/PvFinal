@@ -47,9 +47,7 @@ namespace Chess.forms
         private void Login_Click(object sender, System.EventArgs e)
         {
             Hide();
-            Login logScreen = new Login();
-
-            Thread thread = new Thread(() => Application.Run(logScreen));
+            Thread thread = new Thread(() => Application.Run(new Login()));
 
             thread.Start();
             thread.Join();
@@ -57,8 +55,7 @@ namespace Chess.forms
             if (UsersDB.logged)
             {
                 Close();
-                Selection selection = new Selection();
-                new Thread(() => Application.Run(selection)).Start();
+                new Thread(() => Application.Run(new Selection())).Start();
             }
             else
             {
@@ -69,9 +66,7 @@ namespace Chess.forms
         private void Register_Click(object sender, System.EventArgs e)
         {
             Hide();
-            Register regScreen = new Register();
-
-            Thread thread = new Thread(() => Application.Run(regScreen));
+            Thread thread = new Thread(() => Application.Run(new Register()));
 
             thread.Start();
             thread.Join();

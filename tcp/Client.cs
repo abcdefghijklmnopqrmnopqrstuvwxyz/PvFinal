@@ -2,13 +2,12 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Chess.db;
 using Chess.forms;
 
 namespace Chess.tcp
 {
-    internal class Client 
+    internal class Client : GameConnection
     {
         public static string message = null;
         private const int serverPort = 2459;
@@ -25,17 +24,17 @@ namespace Chess.tcp
             Start();
         }
 
-        private void Start()
+        protected override void Start()
         {
             Task.Run(async () =>
             {
-                await FindServer();
+                await FindOpponent();
                 await SetNames();
-                await CommunicateWithServer();
+                await Communicate();
             });
         }
 
-        private async Task FindServer()
+        protected override async Task FindOpponent()
         {
             tcpClient = new TcpClient();
             while (!tcpClient.Connected)
@@ -51,7 +50,7 @@ namespace Chess.tcp
             }
         }
 
-        private async Task SetNames()
+        protected override async Task SetNames()
         {
             networkStream = tcpClient.GetStream();
 
@@ -65,16 +64,22 @@ namespace Chess.tcp
             game.SetupNames(UsersDB.username, server);
         }
 
-        private async Task CommunicateWithServer()
+        protected override async Task Communicate()
         {
-            while (Game.GameOngoing)
+            string response;
+
+            while (true)
             {
                 byte[] buffer = new byte[1024];
                 int bytesRead = await networkStream.ReadAsync(buffer, 0, buffer.Length);
-                string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                 string[] parts = response.Split(',');
 
                 game.OpponentMove(Int32.Parse(parts[0]), Int32.Parse(parts[1]), Int32.Parse(parts[2]));
+
+                if (parts.Length > 3)
+                    if (parts[3].Equals("black") || parts[3].Equals("white"))
+                        break;
 
                 Game.IsOnTurn = true;
 
@@ -85,12 +90,21 @@ namespace Chess.tcp
 
                 byte[] data = Encoding.UTF8.GetBytes(message);
                 await networkStream.WriteAsync(data, 0, data.Length);
+                string[] mess = message.Split(',');
+
+                if (mess.Length > 3)
+                    if (mess[3].Equals("black") || mess[3].Equals("white"))
+                    {
+                        response = mess[3];
+                        break;
+                    }
 
                 message = null;
             }
 
             networkStream.Close();
             tcpClient.Close();
+            Exit(game, response);
         }
 
     }

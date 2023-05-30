@@ -82,10 +82,11 @@
             // IP
             // 
             this.IP.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.IP.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.IP.Font = new System.Drawing.Font("Tahoma", 24F);
-            this.IP.Location = new System.Drawing.Point(500, 314);
+            this.IP.Location = new System.Drawing.Point(500, 318);
             this.IP.Name = "IP";
-            this.IP.Size = new System.Drawing.Size(199, 46);
+            this.IP.Size = new System.Drawing.Size(199, 39);
             this.IP.TabIndex = 2;
             // 
             // Selection

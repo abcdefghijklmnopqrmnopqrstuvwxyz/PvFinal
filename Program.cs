@@ -8,8 +8,7 @@ namespace Chess
     {
         static void Main()
         {
-            HomeScreen loadScreen = new HomeScreen();
-            new Thread(() => Application.Run(loadScreen)).Start();
+            new Thread(() => Application.Run(new HomeScreen())).Start();
         }
 
     }

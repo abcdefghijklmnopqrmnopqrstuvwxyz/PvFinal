@@ -13,7 +13,7 @@ namespace Chess.forms
             InitializeComponent();
         }
 
-        private void Host_Click(object sender, System.EventArgs e)
+        private void Host_Click(object sender, EventArgs e)
         {
             Close();
             Game game = null;
@@ -30,12 +30,17 @@ namespace Chess.forms
             new Server(game);
         }
 
-        private void Join_Click(object sender, System.EventArgs e)
+        private void Join_Click(object sender, EventArgs e)
         {
             Regex ip = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
             MatchCollection result = ip.Matches(IP.Text);
+            string address = null;
 
-            if (result.Count < 1)
+            if (result.Count > 0)
+                address = result[0].Value;
+            else if (IP.Text.Equals(""))
+                address = "127.0.0.1";
+            else
             {
                 MessageBox.Show("Invalid IP address!", "Invalid address.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -53,7 +58,7 @@ namespace Chess.forms
             while (game == null)
                 Thread.Sleep(1);
 
-            new Client(game, result[0].Value);
+            new Client(game, address);
         }
 
     }

@@ -14,7 +14,6 @@ namespace Chess.forms
         private Piece ActivePiece = null;
         private readonly bool IsServer;
         public static bool IsOnTurn = false;
-        public static bool GameOngoing = true;
         public const int BoardSize = 8;
 
         public Game(bool isServer)
@@ -23,17 +22,13 @@ namespace Chess.forms
             ResizeComponents();
             SetupBoard();
             SetupPieces();
-            ResizeImages();
             IsServer = isServer;
         }
 
         private void BoardScreen_Resize(object sender, EventArgs e)
         {
             if (!(WindowState == FormWindowState.Minimized))
-            {
                 ResizeComponents();
-                ResizeImages();
-            }
         }
 
         private void ResizeComponents()
@@ -126,24 +121,50 @@ namespace Chess.forms
 
                     if (button.BackColor == Color.LightGreen && j + (i * BoardSize) == index)
                     {
-                        DiscardPiece(j + i * BoardSize);
                         string msg = (ActivePiece.Pos_x * BoardSize + ActivePiece.Pos_y) + "," + i + "," + j;
                         if (IsServer)
                             Server.message = msg;
                         else
                             Client.message = msg;
+                        DiscardPiece(j + i * BoardSize);
                         button.Image = ActivePiece.Image;
                         RemovePiece(ActivePiece.Pos_x, ActivePiece.Pos_y);
                         ActivePiece.Pos_x = i; 
                         ActivePiece.Pos_y = j;
                         ActivePiece = null;
+                        Promote();
                     }
                 }
             }
 
             ColorButtons();
             HighlightMoves();
-            ResizeImages();
+        }
+
+        private void Promote()
+        {
+            List<Piece> list = PiecesList.ListBlack.Concat(PiecesList.ListWhite).ToList();
+
+            foreach (Piece piece in list)
+            {
+                if (piece.Type == PieceType.Pawn && (piece.Pos_x == BoardSize - 1 || piece.Pos_x == 0))
+                {
+                    if (piece.Color == PieceColor.White)
+                    {
+                        PiecesList.ListWhite.Add(new Queen(piece.Color, PieceType.Queen, Image.FromFile(PiecesList.Path + "w_queen.png"), true, piece.Pos_x, piece.Pos_y));
+                        chessboardButtons[piece.Pos_x, piece.Pos_y].Image = Image.FromFile(PiecesList.Path + "w_queen.png");
+                    }
+                    else
+                    {
+                        PiecesList.ListWhite.Add(new Queen(piece.Color, PieceType.Queen, Image.FromFile(PiecesList.Path + "b_queen.png"), true, piece.Pos_x, piece.Pos_y));
+                        chessboardButtons[piece.Pos_x, piece.Pos_y].Image = Image.FromFile(PiecesList.Path + "b_queen.png");
+                    }
+                    piece.Active = false;
+                    piece.Image = null;
+                    piece.Pos_x = -1;
+                    piece.Pos_y = -1;
+                }
+            }
         }
 
         private void DiscardPiece(int index)
@@ -157,6 +178,19 @@ namespace Chess.forms
                     piece.Image = null;
                     piece.Pos_x = -1;
                     piece.Pos_y = -1;
+                    if (piece.Type == PieceType.King)
+                    {
+                        if (piece.Color == PieceColor.White)
+                        {
+                            Server.message += ",black";
+                            Client.message += ",black";
+                        }
+                        else
+                        {
+                            Server.message += ",white";
+                            Client.message += ",white";
+                        }
+                    }
                 }
             }
         }
@@ -221,34 +255,10 @@ namespace Chess.forms
                 chessboardButtons[x.Pos_x, x.Pos_y].Image = x.Image;
         }
 
-        private void ResizeImages()
-        {
-            foreach (var x in chessboardButtons)
-            {
-                if (x.Image != null)
-                {
-                    Size newSize = new Size(x.Width - x.Width / 3, x.Height - x.Height / 6);
-                    x.Image = ResizeImage(x.Image, newSize);
-                }
-            }
-        }
-
-        private Image ResizeImage(Image image, Size newSize)
-        {
-            Bitmap resizedImage = new Bitmap(newSize.Width, newSize.Height);
-
-            using (Graphics graphics = Graphics.FromImage(resizedImage))
-            {
-                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                graphics.DrawImage(image, 0, 0, newSize.Width, newSize.Height);
-            }
-
-            return resizedImage;
-        }
-
         public void OpponentMove(int index, int bx, int by)
         {
             List<Piece> list = PiecesList.ListBlack.Concat(PiecesList.ListWhite).ToList();
+
             foreach (Piece piece in list)
             {
                 int pieceIndex = piece.Pos_y + (piece.Pos_x * BoardSize);
@@ -262,7 +272,7 @@ namespace Chess.forms
             ActivePiece.Pos_x = bx;
             ActivePiece.Pos_y = by;
             ActivePiece = null;
-            ResizeImages();
+            Promote();
         }
 
         public void SetupNames(string name1, string name2)
