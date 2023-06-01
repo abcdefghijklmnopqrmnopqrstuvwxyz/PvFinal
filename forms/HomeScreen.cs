@@ -20,9 +20,7 @@ namespace Chess.forms
         private void HomeScreen_Resize(object sender, System.EventArgs e)
         {
             if(!(WindowState == FormWindowState.Minimized))
-            {
                 ResizeComponents();
-            }
         }
 
         private void ResizeComponents()
@@ -58,9 +56,7 @@ namespace Chess.forms
                 new Thread(() => Application.Run(new Selection())).Start();
             }
             else
-            {
                 Show();
-            }
         }
 
         private void Register_Click(object sender, System.EventArgs e)

@@ -1,5 +1,4 @@
 ﻿using Chess.forms;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Chess
@@ -8,7 +7,7 @@ namespace Chess
     {
         static void Main()
         {
-            new Thread(() => Application.Run(new HomeScreen())).Start();
+            Application.Run(new HomeScreen());
         }
 
     }

@@ -10,19 +10,34 @@ namespace Chess.forms
 {
     public partial class Game : Form
     {
+        private Server server;
+        private Client client;
         private readonly Button[,] chessboardButtons = new Button[BoardSize, BoardSize];
         private Piece ActivePiece = null;
         private readonly bool IsServer;
         public static bool IsOnTurn = false;
         public const int BoardSize = 8;
 
-        public Game(bool isServer)
+        public Game()
+        {
+            Init();
+            IsServer = true;
+            server = new Server(this);
+        }
+
+        public Game(string ip)
+        {
+            Init();
+            IsServer = false;
+            client = new Client(this, ip);
+        }
+
+        private void Init()
         {
             InitializeComponent();
             ResizeComponents();
             SetupBoard();
             SetupPieces();
-            IsServer = isServer;
         }
 
         private void BoardScreen_Resize(object sender, EventArgs e)

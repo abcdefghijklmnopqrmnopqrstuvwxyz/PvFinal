@@ -20,17 +20,13 @@ namespace Chess.forms
                     Close();
             }
             else
-            {
                 MessageBox.Show("Minimal length for username is 1 cahracter and for password 5 characters!", "Register error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void Nameinput_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
             if (!char.IsLetterOrDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
                 e.Handled = true;
-            }
         }
 
     }

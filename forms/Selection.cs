@@ -1,5 +1,4 @@
-﻿using Chess.tcp;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System;
 using System.Threading;
 using System.Windows.Forms;
@@ -8,6 +7,8 @@ namespace Chess.forms
 {
     public partial class Selection : Form
     {
+        Game game;
+
         public Selection()
         {
             InitializeComponent();
@@ -17,49 +18,43 @@ namespace Chess.forms
         {
             Close();
 
-            Game game = null;
-
             new Thread(() =>
             {
-                game = new Game(true);
+                game = new Game();
                 Application.Run(game);
             }).Start();
-
-            while (game == null)
-                Thread.Sleep(1);
-
-            new Server(game);
         }
 
         private void Join_Click(object sender, EventArgs e)
         {
-            Regex ip = new Regex(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b");
-            MatchCollection result = ip.Matches(IP.Text);
-            string address = null;
+            string address = CheckAddress();
 
-            if (result.Count > 0)
-                address = result[0].Value;
-            else if (IP.Text.Equals(""))
-                address = "127.0.0.1";
-            else
+            if (address == null)
             {
                 MessageBox.Show("Invalid IP address!", "Invalid address.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             Close();
-            Game game = null;
 
             new Thread(() =>
             {
-                game = new Game(false);
+                game = new Game(address);
                 Application.Run(game);
             }).Start();
+        }
 
-            while (game == null)
-                Thread.Sleep(1);
+        private string CheckAddress()
+        {
+            Regex ip = new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
+            MatchCollection result = ip.Matches(IP.Text);
 
-            new Client(game, address);
+            if (result.Count > 0)
+                return result[0].Value;
+            else if (IP.Text.Equals(""))
+                return "127.0.0.1";
+            else
+                return null;
         }
 
     }
