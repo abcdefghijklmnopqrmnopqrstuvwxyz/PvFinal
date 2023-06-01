@@ -16,6 +16,7 @@ namespace Chess.forms
         private void Host_Click(object sender, EventArgs e)
         {
             Close();
+
             Game game = null;
 
             new Thread(() =>

@@ -14,64 +14,78 @@ namespace Chess.db
 
         public void Login(Users u)
         {
-            SqlConnection connection = DbConnection.Connect();
-
-            using (SqlCommand command = new SqlCommand("login_user", connection))
+            try
             {
-                command.CommandType = CommandType.StoredProcedure;
+                SqlConnection connection = DbConnection.Connect();
 
-                command.Parameters.AddWithValue("@name", u.Name);
-                command.Parameters.AddWithValue("@password", u.Password);
-
-                SqlParameter successParameter = new SqlParameter("@success", SqlDbType.Int);
-                successParameter.Direction = ParameterDirection.Output;
-                command.Parameters.Add(successParameter);
-
-                command.ExecuteNonQuery();
-
-                int success = Convert.ToInt32(successParameter.Value);
-                if (success == 1)
+                using (SqlCommand command = new SqlCommand("login_user", connection))
                 {
-                    logged = true;
-                    username = u.Name;  
-                    MessageBox.Show("You have successfully logged!", "Successfully logged.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@name", u.Name);
+                    command.Parameters.AddWithValue("@password", u.Password);
+
+                    SqlParameter successParameter = new SqlParameter("@success", SqlDbType.Int);
+                    successParameter.Direction = ParameterDirection.Output;
+                    command.Parameters.Add(successParameter);
+
+                    command.ExecuteNonQuery();
+
+                    int success = Convert.ToInt32(successParameter.Value);
+                    if (success == 1)
+                    {
+                        logged = true;
+                        username = u.Name;
+                        MessageBox.Show("You have successfully logged!", "Successfully logged.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        logged = false;
+                        MessageBox.Show("Invalid username or password!", "Invalid credentials.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                else
-                {
-                    logged = false;
-                    MessageBox.Show("Invalid username or password!", "Invalid credentials.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }
+            catch
+            {
+                MessageBox.Show("Connection to database was unsuccessfull!", "Connection error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         public void Register(Users u)
         {
-            SqlConnection connection = DbConnection.Connect();
-
-            using (SqlCommand command = new SqlCommand("add_user", connection))
+            try
             {
-                command.CommandType = CommandType.StoredProcedure;
+                SqlConnection connection = DbConnection.Connect();
 
-                command.Parameters.AddWithValue("@name", u.Name);
-                command.Parameters.AddWithValue("@password", u.Password);
-
-                SqlParameter successParameter = new SqlParameter("@success", SqlDbType.Int);
-                successParameter.Direction = ParameterDirection.Output;
-                command.Parameters.Add(successParameter);
-
-                command.ExecuteNonQuery();
-
-                int success = Convert.ToInt32(successParameter.Value);
-                if (success == 1)
+                using (SqlCommand command = new SqlCommand("add_user", connection))
                 {
-                    registered = true;
-                    MessageBox.Show("You have been successfully registered!", "Successfully registered.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@name", u.Name);
+                    command.Parameters.AddWithValue("@password", u.Password);
+
+                    SqlParameter successParameter = new SqlParameter("@success", SqlDbType.Int);
+                    successParameter.Direction = ParameterDirection.Output;
+                    command.Parameters.Add(successParameter);
+
+                    command.ExecuteNonQuery();
+
+                    int success = Convert.ToInt32(successParameter.Value);
+                    if (success == 1)
+                    {
+                        registered = true;
+                        MessageBox.Show("You have been successfully registered!", "Successfully registered.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        registered = false;
+                        MessageBox.Show("This username already exists!", "Invalid username.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
-                else
-                {
-                    registered = false;
-                    MessageBox.Show("This username already exists!", "Invalid username.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+            }
+            catch
+            {
+                MessageBox.Show("Connection to database was unsuccessfull!", "Connection error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace Chess.db
 {

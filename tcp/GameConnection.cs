@@ -26,8 +26,6 @@ namespace Chess.tcp
 
             if (result == DialogResult.OK)
                 game.Close();
-
-            new Thread(() => Application.Run(new Selection())).Start();
         }
 
     }
