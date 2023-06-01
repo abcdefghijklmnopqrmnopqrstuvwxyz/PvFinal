@@ -78,8 +78,10 @@ namespace Chess.tcp
                 game.OpponentMove(Int32.Parse(parts[0]), Int32.Parse(parts[1]), Int32.Parse(parts[2]));
 
                 if (parts.Length > 3)
-                    if (parts[3].Equals("black") || parts[3].Equals("white"))
-                        break;
+                {
+                    response = parts[3];
+                    break;
+                }
 
                 Game.IsOnTurn = true;
 
@@ -93,11 +95,10 @@ namespace Chess.tcp
                 string[] mess = message.Split(',');
 
                 if (mess.Length > 3)
-                    if (mess[3].Equals("black") || mess[3].Equals("white"))
-                    {
-                        response = mess[3];
-                        break;
-                    }
+                {
+                    response = mess[3];
+                    break;
+                }
 
                 message = null;
             }
