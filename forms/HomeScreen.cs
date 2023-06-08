@@ -23,6 +23,9 @@ namespace Chess.forms
                 ResizeComponents();
         }
 
+        /// <summary>
+        /// Resizes components of 'HomeScreen' form.
+        /// </summary>
         private void ResizeComponents()
         {
             int width = this.ClientSize.Width / 4;
@@ -42,6 +45,11 @@ namespace Chess.forms
             Title.Font = titleFont;
         }
 
+        /// <summary>
+        /// Opens 'Login' form. If successfully logged, opens 'Selection' form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Login_Click(object sender, System.EventArgs e)
         {
             Hide();
@@ -59,6 +67,11 @@ namespace Chess.forms
                 Show();
         }
 
+        /// <summary>
+        /// Opens registration form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Register_Click(object sender, System.EventArgs e)
         {
             Hide();

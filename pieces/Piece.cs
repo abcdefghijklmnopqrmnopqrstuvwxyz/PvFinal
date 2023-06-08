@@ -30,11 +30,21 @@ namespace Chess.pieces
             Pos_y = pos_y;
         }
 
+        /// <summary>
+        /// Gets valid moves for its piece.
+        /// </summary>
+        /// <returns>Enumeration of moves</returns>
+        /// <exception cref="System.Exception"></exception>
         public virtual IEnumerable<int> ValidMoves()
         {
             throw new System.Exception(message: "Not implemented.");
         }
 
+        /// <summary>
+        /// Check if on specified index of board is same team piece.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>True/False</returns>
         protected bool IsOwnPiece(int index)
         {
             foreach (Piece piece in Color == PieceColor.White ? PiecesList.ListWhite : PiecesList.ListBlack)
@@ -45,6 +55,11 @@ namespace Chess.pieces
             return false;
         }
 
+        /// <summary>
+        /// Check if on specified index of board is enemy team piece.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>True/False</returns>
         protected bool IsEnemyPiece(int index)
         {
             foreach (Piece piece in Color == PieceColor.White ? PiecesList.ListBlack : PiecesList.ListWhite)

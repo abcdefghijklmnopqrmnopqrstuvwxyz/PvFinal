@@ -10,14 +10,27 @@ namespace Chess.forms
 {
     public partial class Game : Form
     {
+        /*
+         * This class contains all logic for the game and UI.
+         */
+
         private Server server;
         private Client client;
         private readonly Button[,] chessboardButtons = new Button[BoardSize, BoardSize];
         private Piece ActivePiece = null;
         private readonly bool IsServer;
         public static bool IsOnTurn = false;
+
+        /*
+         * Provides board size, pieces are made to be responsive so the board size can be changed. 
+         * Pieces are placed static to the board, so if board size is changed, 
+         * do not forget to check pieces lists in class 'Chess.pieces.PieceList.cs'
+         */
         public const int BoardSize = 8;
 
+        /// <summary>
+        /// Inicializes game form and starts 'Server' instance listening for clients on background on port 2459
+        /// </summary>
         public Game()
         {
             Init();
@@ -25,6 +38,10 @@ namespace Chess.forms
             server = new Server(this);
         }
 
+        /// <summary>
+        /// Inicializes game form and starts 'Client' instance searching for server on background on port 2459
+        /// </summary>
+        /// <param name="ip"></param>
         public Game(string ip)
         {
             Init();
@@ -32,6 +49,9 @@ namespace Chess.forms
             client = new Client(this, ip);
         }
 
+        /// <summary>
+        /// Inicializes game form.
+        /// </summary>
         private void Init()
         {
             InitializeComponent();
@@ -46,6 +66,10 @@ namespace Chess.forms
                 ResizeComponents();
         }
 
+
+        /// <summary>
+        /// Resizes components of 'Game' form.
+        /// </summary>
         private void ResizeComponents()
         {
             int width = ClientSize.Width / 4;
@@ -71,6 +95,9 @@ namespace Chess.forms
             }
         }
 
+        /// <summary>
+        /// Sets up chess board UI.
+        /// </summary>
         private void SetupBoard()
         {
             Color lightSquareColor = Color.White;
@@ -94,6 +121,9 @@ namespace Chess.forms
             ColorButtons();
         }
 
+        /// <summary>
+        /// Colours chess board to make black and white pattern.
+        /// </summary>
         private void ColorButtons()
         {
             for (int i = 0; i < chessboardButtons.GetLength(0); i++)
@@ -108,6 +138,11 @@ namespace Chess.forms
             }
         }
 
+        /// <summary>
+        /// If users is on turn, tries to move.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TryMove(object sender, EventArgs e)
         {
             if (!IsOnTurn)
@@ -156,6 +191,9 @@ namespace Chess.forms
             HighlightMoves();
         }
 
+        /// <summary>
+        /// Checks if pawn is on back line. If yes, promotes the pawn to queen.
+        /// </summary>
         private void Promote()
         {
             List<Piece> list = PiecesList.ListBlack.Concat(PiecesList.ListWhite).ToList();
@@ -182,6 +220,10 @@ namespace Chess.forms
             }
         }
 
+        /// <summary>
+        /// Tries to discard the piece on specified index.
+        /// </summary>
+        /// <param name="index"></param>
         private void DiscardPiece(int index)
         {
             foreach (Piece piece in ActivePiece.Color == PieceColor.White ? PiecesList.ListBlack : PiecesList.ListWhite)
@@ -210,11 +252,21 @@ namespace Chess.forms
             }
         }
 
+        /// <summary>
+        /// Removes piece as background picture from button on specified coordinations.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         private void RemovePiece(int x, int y)
         {
             chessboardButtons[x, y].Image = null;
         }
 
+        /// <summary>
+        /// Puts piece that user clicked on into 'ActivePiece' instance for future manipulation.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="list"></param>
         private void CheckActivePiece(int index, List<Piece> list)
         {
             foreach (Piece piece in list)
@@ -242,6 +294,9 @@ namespace Chess.forms
             ActivePiece = null;
         }
 
+        /// <summary>
+        /// For 'ActivePiece' instance, highlists all possible moves that can be made.
+        /// </summary>
         private void HighlightMoves()
         {
             if (ActivePiece != null)
@@ -262,6 +317,9 @@ namespace Chess.forms
             }
         }
 
+        /// <summary>
+        /// Sets up all pieces to positions from static-made sets of pieces for 8x8 board size.
+        /// </summary>
         private void SetupPieces()
         {
             foreach (var x in PiecesList.ListBlack)
@@ -270,6 +328,12 @@ namespace Chess.forms
                 chessboardButtons[x.Pos_x, x.Pos_y].Image = x.Image;
         }
 
+        /// <summary>
+        /// Moves opponents piece from 'index' to 'bx, by' coordinations.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="bx"></param>
+        /// <param name="by"></param>
         public void OpponentMove(int index, int bx, int by)
         {
             List<Piece> list = PiecesList.ListBlack.Concat(PiecesList.ListWhite).ToList();
@@ -290,6 +354,11 @@ namespace Chess.forms
             Promote();
         }
 
+        /// <summary>
+        /// Setups names for both users.
+        /// </summary>
+        /// <param name="name1"></param>
+        /// <param name="name2"></param>
         public void SetupNames(string name1, string name2)
         {
             User1.Text = name1;

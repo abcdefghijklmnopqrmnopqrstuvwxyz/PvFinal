@@ -1,5 +1,9 @@
 ﻿namespace Chess.pieces
 {
+    /*
+     * Auxiliary enums for individual pieces.
+     */
+
     public enum PieceColor
     { 
         Black,

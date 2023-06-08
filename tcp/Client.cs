@@ -10,7 +10,6 @@ namespace Chess.tcp
     internal class Client : GameConnection
     {
         public static string message = null;
-        private const int serverPort = 2459;
         private TcpClient tcpClient;
         private NetworkStream networkStream;
         private readonly Game game;

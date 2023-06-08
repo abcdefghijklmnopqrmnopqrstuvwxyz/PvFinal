@@ -7,6 +7,10 @@ namespace Chess.pieces
 {
     internal class PiecesList
     {
+        /*
+         * This class represents lists of pieces for both players.
+         */
+
         public static readonly string Path = Directory.GetParent(Directory.GetParent(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName).FullName).FullName + "\\res\\";
 
         public static List<Piece> ListBlack = new List<Piece> {

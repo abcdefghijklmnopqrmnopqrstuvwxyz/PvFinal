@@ -8,8 +8,15 @@ namespace Chess.db
 {
     internal class UsersDB : IDB<Users>
     {
-        public static bool registered = false;
-        public static bool logged = false;
+        /// <summary>
+        /// Is used in to check if user passed login.
+        /// </summary>
+        public static bool logged;
+
+        /// <summary>
+        /// Is used in to check if user passed registration.
+        /// </summary>
+        public static bool registered;
         public static string username;
 
         public void Login(Users u)

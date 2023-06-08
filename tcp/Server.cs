@@ -11,7 +11,6 @@ namespace Chess.tcp
     internal class Server : GameConnection
     {
         public static string message = null;
-        private const int serverPort = 2459;
         private TcpClient connectedClient;
         private NetworkStream networkStream;
         private readonly Game game;

@@ -1,11 +1,14 @@
 ﻿using System.Configuration;
 using System.Data.SqlClient;
-using System.Windows.Forms;
 
 namespace Chess.db
 {
     public class DbConnection
     {
+        /*
+         * Basic singleton design pattern for connection to database trough Appconfig.
+         */
+
         private static SqlConnection Instance = null;
 
         private DbConnection()

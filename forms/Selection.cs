@@ -14,6 +14,11 @@ namespace Chess.forms
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Opens new game instance as server.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Host_Click(object sender, EventArgs e)
         {
             Close();
@@ -25,6 +30,11 @@ namespace Chess.forms
             }).Start();
         }
 
+        /// <summary>
+        /// Opens new game instance as client.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Join_Click(object sender, EventArgs e)
         {
             string address = CheckAddress();
@@ -44,6 +54,10 @@ namespace Chess.forms
             }).Start();
         }
 
+        /// <summary>
+        /// Check if input IP address is valid. If input is empty, return localhost IP.
+        /// </summary>
+        /// <returns>IP address</returns>
         private string CheckAddress()
         {
             Regex ip = new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
